@@ -3,20 +3,20 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "multi-raft"
+name = "flotilla"
 version = "0.1.0"
 description = "Run thousands of independent Raft consensus groups on one set of nodes - shared scheduler, batched cross-group RPC."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Parag Sawant" }]
-keywords = ["raft", "consensus", "multi-raft", "distributed-systems", "sharding"]
+keywords = ["raft", "consensus", "flotilla", "distributed-systems", "sharding"]
 
 [project.optional-dependencies]
 dev = ["pytest>=7"]
 
 [tool.setuptools]
-packages = ["raftswarm"]
+packages = ["flotilla"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

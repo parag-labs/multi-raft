@@ -1,9 +1,9 @@
-# multi-raft: design, trade-offs, and non-goals
+# flotilla: design, trade-offs, and non-goals
 
 Status: accepted
 Author: Parag Sawant
 
-Why multi-raft looks the way it does. It exists because "run Raft" and "run ten
+Why flotilla looks the way it does. It exists because "run Raft" and "run ten
 thousand Raft groups on one box" are different engineering problems, and the
 second one is where the interesting decisions live. This document is about those
 decisions, and about being clear that the consensus algorithm itself is *not*
@@ -46,7 +46,7 @@ pairs, regardless of how many groups are chatting. The tests make this concrete:
 at 2,000 groups across three nodes, logical messages are in the thousands but
 envelope count stays at most six.
 
-This is the single highest-leverage optimization in real multi-Raft systems, and
+This is the single highest-leverage optimization in real flotilla systems, and
 it's the one worth showing in a small, legible form.
 
 ## Trade-offs I made on purpose
@@ -55,7 +55,7 @@ it's the one worth showing in a small, legible form.
   smallest-id member as leader instead of running elections. That's deliberate:
   the scheduling and batching layer is identical whether each group runs toy
   logic or a full election, and re-deriving Raft here would only obscure the part
-  that's actually novel. Real consensus lives in the sibling `mini-raft`.
+  that's actually novel. Real consensus lives in the sibling `coracle`.
 - **Synchronous, in-memory transport.** The `Cluster` pumps envelopes directly
   rather than over a socket, because the property being demonstrated - envelope
   count vs. message count - is transport-independent, and an in-memory pump keeps
@@ -67,9 +67,9 @@ it's the one worth showing in a small, legible form.
 ## Non-goals
 
 - **Not a reimplementation of Raft.** Elections, log replication, and the
-  current-term commit rule are `mini-raft`'s job. Pairing the two is the point;
+  current-term commit rule are `coracle`'s job. Pairing the two is the point;
   duplicating consensus here is not.
-- **No `io_uring` / zero-copy WAL.** Real multi-Raft engines persist their logs
+- **No `io_uring` / zero-copy WAL.** Real flotilla engines persist their logs
   with `io_uring` and zero-copy tricks for throughput. That is genuinely valuable
   and genuinely OS- and hardware-specific; a pure-Python reference can't honestly
   claim those numbers, so persistence is out of scope rather than faked.

@@ -6,4 +6,4 @@ All notable changes to this project are documented here. Format follows [Keep a 
 
 First public release. shared scheduler and cross-group RPC batching to run thousands of Raft groups on a few nodes.
 
-[0.1.0]: https://github.com/parag-labs/multi-raft/releases/tag/v0.1.0
+[0.1.0]: https://github.com/parag-labs/flotilla/releases/tag/v0.1.0

@@ -1,4 +1,4 @@
-from raftswarm import Cluster
+from flotilla import Cluster
 
 
 def _swarm(n_groups: int, nodes=("n1", "n2", "n3")):

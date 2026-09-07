@@ -1,17 +1,19 @@
-<h1 align="center">multi-raft</h1>
+<h1 align="center">flotilla</h1>
 
 <p align="center">Run thousands of independent Raft consensus groups on one set of physical nodes — a shared scheduler instead of a thread per group, and cross-group RPC batching instead of an RPC per group.</p>
+<p align="center"><em>A flotilla is a fleet of small vessels sailing together - which is exactly this: many <a href="https://github.com/parag-labs/coracle">coracle</a>-style groups, run as one fleet.</em></p>
+
 
 ---
 
 ## Why this exists
 
-A single Raft group is a solved problem (see the sibling [mini-raft](https://github.com/parag-labs/mini-raft)). Scaling a *database* horizontally means running **thousands** of them — one per shard — on a handful of machines. That's how CockroachDB, TiKV, and Spanner work. And the moment you try it, two costs dominate, neither of which is the consensus algorithm itself:
+A single Raft group is a solved problem (see the sibling [coracle](https://github.com/parag-labs/coracle)). Scaling a *database* horizontally means running **thousands** of them — one per shard — on a handful of machines. That's how CockroachDB, TiKV, and Spanner work. And the moment you try it, two costs dominate, neither of which is the consensus algorithm itself:
 
 1. **A thread per group** collapses under context-switch overhead at a few thousand groups.
 2. **An RPC per group** floods the network when a hundred groups on node A all need to talk to node B every heartbeat.
 
-multi-raft is the multiplexing layer that removes both. The consensus logic is deliberately left to mini-raft; this repo is about running a *swarm* of state machines efficiently.
+flotilla is the multiplexing layer that removes both. The consensus logic is deliberately left to coracle; this repo is about running a *swarm* of state machines efficiently.
 
 ## What it does
 
@@ -22,7 +24,7 @@ multi-raft is the multiplexing layer that removes both. The consensus logic is d
 ## Quickstart
 
 ```python
-from multi-raft import Cluster
+from flotilla import Cluster
 
 c = Cluster(["n1", "n2", "n3"])
 for g in range(2000):
@@ -44,11 +46,11 @@ pytest
 
 ## Design
 
-- **[DESIGN.md](DESIGN.md)** — why the scheduler owns the groups (not vice versa), how batching keeps the wire cost bounded, and the honest non-goals (the consensus core is mini-raft's job; `io_uring` zero-copy WAL is a documented production-only piece, not something a pure-Python reference can claim).
+- **[DESIGN.md](DESIGN.md)** — why the scheduler owns the groups (not vice versa), how batching keeps the wire cost bounded, and the honest non-goals (the consensus core is coracle's job; `io_uring` zero-copy WAL is a documented production-only piece, not something a pure-Python reference can claim).
 
-## Relationship to mini-raft
+## Relationship to coracle
 
-`GroupReplica` here is a stand-in with trivial leader selection, on purpose — the value of this repo is the scheduling and batching layer, which is identical whether each group runs toy logic or a full mini-raft node. Swap the replica implementation and the scheduler/batcher don't change.
+`GroupReplica` here is a stand-in with trivial leader selection, on purpose — the value of this repo is the scheduling and batching layer, which is identical whether each group runs toy logic or a full coracle node. Swap the replica implementation and the scheduler/batcher don't change.
 
 ## How it works
 
@@ -71,8 +73,8 @@ flowchart LR
 ## Layout
 
 ```
-multi-raft/
-├── raftswarm/          the multiplexing layer
+flotilla/
+├── flotilla/            the multiplexing layer
 │   ├── scheduler.py    the shared scheduler that runs many groups without a thread each
 │   └── cluster.py      cluster wiring + cross-group RPC batching
 ├── tests/              convergence + the batching-win tests
