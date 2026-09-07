@@ -26,7 +26,7 @@ is the Raft algorithm:
 
 ![shared scheduler and RPC batching](docs/diagrams/shared-scheduler-batching.png)
 
-*(Source: [`docs/diagrams/shared-scheduler-batching.excalidraw`](docs/diagrams/shared-scheduler-batching.excalidraw) - editable in [excalidraw](https://aka.ms/excalidraw).)*
+*(The same diagram renders inline as Mermaid in the [README](README.md#how-it-works); this PNG is a static export.)*
 
 
 The unit of execution is a per-node `Scheduler`, not a per-group task. It holds
