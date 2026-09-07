@@ -9,7 +9,7 @@ into one envelope.
 
 The actual consensus (real elections, log replication, the current-term commit
 rule) is deliberately *not* reimplemented here - that lives in the sibling
-`mini-raft` project. raft-swarm is the layer that lets you run a swarm of them.
+`mini-raft` project. multi-raft is the layer that lets you run a swarm of them.
 """
 
 from __future__ import annotations

@@ -10,7 +10,7 @@
       "y": 20,
       "width": 900,
       "height": 60,
-      "text": "raft-swarm - one scheduler, batched RPC across groups",
+      "text": "multi-raft - one scheduler, batched RPC across groups",
       "fontSize": 24,
       "fontFamily": 1,
       "strokeColor": "#000000",

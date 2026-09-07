@@ -1,4 +1,4 @@
-"""raft-swarm: run thousands of Raft groups on one set of nodes."""
+"""multi-raft: run thousands of Raft groups on one set of nodes."""
 
 from .cluster import Cluster
 from .scheduler import GroupReplica, Scheduler
