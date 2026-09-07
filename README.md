@@ -54,16 +54,16 @@ pytest
 
 ```mermaid
 flowchart LR
-  classDef proc fill:#4a90e2,stroke:#2c5aa0,color:#fff
-  classDef work fill:#8e44ad,stroke:#6c3483,color:#fff
-  subgraph A["node A - Scheduler (1 thread)"]
-    GA["g0 - g1 - ... - g999<br/>one replica per group,<br/>all driven in one pass"]:::proc
-    BATCH["batch by destination peer"]:::work
+  classDef proc fill:#eff6ff,stroke:#3b82f6,color:#1e3a8a
+  classDef work fill:#faf5ff,stroke:#a855f7,color:#581c87
+  subgraph A["Node A"]
+    GA["1000 groups"]:::proc
+    BATCH["Batch by peer"]:::work
   end
-  ENV["ONE envelope<br/>1000 inner msgs to node B"]:::proc
-  subgraph B["node B - Scheduler"]
-    UNPACK["unpack envelope, fan each<br/>inner msg to its local replica"]:::work
-    GB["g0 - g1 - ... - g999"]:::proc
+  ENV["One envelope"]:::proc
+  subgraph B["Node B"]
+    UNPACK["Fan out"]:::work
+    GB["1000 groups"]:::proc
   end
   GA --> BATCH -->|coalesced| ENV --> UNPACK --> GB
 ```
