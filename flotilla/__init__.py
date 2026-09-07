@@ -1,4 +1,4 @@
-"""multi-raft: run thousands of Raft groups on one set of nodes."""
+"""flotilla: run thousands of Raft groups on one set of nodes as a single fleet."""
 
 from .cluster import Cluster
 from .scheduler import GroupReplica, Scheduler

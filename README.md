@@ -44,6 +44,16 @@ pip install -e ".[dev]"
 pytest
 ```
 
+## Three languages, one behavior
+
+The same scheduler, cluster, and batching logic — and the same 4 tests — in each language:
+
+| Language | Tests | Run |
+|----------|:-----:|-----|
+| Python | 4 | `pytest -q` |
+| C# (.NET 10) | 4 | `cd csharp && dotnet test` |
+| Java (17+) | 4 | `cd java && mvn test` |
+
 ## Design
 
 - **[DESIGN.md](DESIGN.md)** — why the scheduler owns the groups (not vice versa), how batching keeps the wire cost bounded, and the honest non-goals (the consensus core is coracle's job; `io_uring` zero-copy WAL is a documented production-only piece, not something a pure-Python reference can claim).
@@ -74,9 +84,11 @@ flowchart LR
 
 ```
 flotilla/
-├── flotilla/            the multiplexing layer
+├── flotilla/            the multiplexing layer (Python)
 │   ├── scheduler.py    the shared scheduler that runs many groups without a thread each
 │   └── cluster.py      cluster wiring + cross-group RPC batching
+├── csharp/             the same scheduler + batching, ported to .NET 10 (xUnit)
+├── java/               the same, in Java 17+ (JUnit / Maven)
 ├── tests/              convergence + the batching-win tests
 └── DESIGN.md           the scheduler, the batching, and the non-goals
 ```
