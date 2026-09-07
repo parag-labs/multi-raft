@@ -76,7 +76,6 @@ multi-raft/
 │   ├── scheduler.py    the shared scheduler that runs many groups without a thread each
 │   └── cluster.py      cluster wiring + cross-group RPC batching
 ├── tests/              convergence + the batching-win tests
-├── docs/diagrams/      architecture diagrams
 └── DESIGN.md           the scheduler, the batching, and the non-goals
 ```
 
