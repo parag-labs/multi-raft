@@ -50,6 +50,24 @@ pytest
 
 `GroupReplica` here is a stand-in with trivial leader selection, on purpose — the value of this repo is the scheduling and batching layer, which is identical whether each group runs toy logic or a full mini-raft node. Swap the replica implementation and the scheduler/batcher don't change.
 
+## How it works
+
+```mermaid
+flowchart LR
+  classDef proc fill:#4a90e2,stroke:#2c5aa0,color:#fff
+  classDef work fill:#8e44ad,stroke:#6c3483,color:#fff
+  subgraph A["node A - Scheduler (1 thread)"]
+    GA["g0 - g1 - ... - g999<br/>one replica per group,<br/>all driven in one pass"]:::proc
+    BATCH["batch by destination peer"]:::work
+  end
+  ENV["ONE envelope<br/>1000 inner msgs to node B"]:::proc
+  subgraph B["node B - Scheduler"]
+    UNPACK["unpack envelope, fan each<br/>inner msg to its local replica"]:::work
+    GB["g0 - g1 - ... - g999"]:::proc
+  end
+  GA --> BATCH -->|coalesced| ENV --> UNPACK --> GB
+```
+
 ## Layout
 
 ```
